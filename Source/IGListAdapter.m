@@ -151,6 +151,7 @@
     supplementaryKinds:(NSArray<NSString *> *)supplementaryKinds
        scrollDirection:(UICollectionViewScrollDirection)scrollDirection
         scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                offset: (CGFloat)offset
               animated:(BOOL)animated {
     IGAssertMainThread();
     IGParameterAssert(object != nil);
@@ -227,6 +228,7 @@
                     contentOffset.x = offsetMin - contentInset.left;
                     break;
             }
+            contentOffset.x += offset;
             break;
         case UICollectionViewScrollDirectionVertical:
             switch (scrollPosition) {
@@ -246,10 +248,23 @@
                     contentOffset.y = offsetMin - contentInset.top;
                     break;
             }
+            contentOffset.y += offset;
             break;
     }
 
     [collectionView setContentOffset:contentOffset animated:animated];
+}
+
+
+- (void)scrollToObject:(id)object
+    supplementaryKinds:(NSArray<NSString *> *)supplementaryKinds
+       scrollDirection:(UICollectionViewScrollDirection)scrollDirection
+        scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+              animated:(BOOL)animated {
+    [self scrollToObject:object supplementaryKinds:supplementaryKinds
+         scrollDirection:scrollDirection
+          scrollPosition:scrollPosition
+                  offset:0 animated:animated];
 }
 
 
