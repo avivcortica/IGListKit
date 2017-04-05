@@ -227,6 +227,7 @@ IGLK_SUBCLASSING_RESTRICTED
         scrollPosition:(UICollectionViewScrollPosition)scrollPosition
               animated:(BOOL)animated;
 
+
 /**
  Returns the size of a cell at the specified index path.
 
