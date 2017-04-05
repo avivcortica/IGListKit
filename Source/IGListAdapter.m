@@ -147,7 +147,7 @@
 
 #pragma mark - Scrolling
 
-- (void)scroll22ToObject:(id)object
+- (void)scrollToObject:(id)object
     supplementaryKinds:(NSArray<NSString *> *)supplementaryKinds
        scrollDirection:(UICollectionViewScrollDirection)scrollDirection
         scrollPosition:(UICollectionViewScrollPosition)scrollPosition
@@ -261,7 +261,7 @@
        scrollDirection:(UICollectionViewScrollDirection)scrollDirection
         scrollPosition:(UICollectionViewScrollPosition)scrollPosition
               animated:(BOOL)animated {
-    [self scroll22ToObject:object supplementaryKinds:supplementaryKinds
+    [self scrollToObject:object supplementaryKinds:supplementaryKinds
          scrollDirection:scrollDirection
           scrollPosition:scrollPosition
                   offset:0 animated:animated];
