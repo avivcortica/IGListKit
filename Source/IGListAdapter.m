@@ -252,7 +252,10 @@
             break;
     }
 
-    [collectionView setContentOffset:contentOffset animated:animated];
+    //[collectionView setContentOffset:contentOffset animated:animated];
+    [UIView animateWithDuration:2.0 animations:^{
+        collectionView.contentOffset = contentOffset;
+    }];
 }
 
 
