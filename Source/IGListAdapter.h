@@ -235,6 +235,12 @@ IGLK_SUBCLASSING_RESTRICTED
                 offset: (CGFloat)offset
               animated:(BOOL)animated;
 
+- (CGPoint)getContentOffsetOfObject:(id)object
+                 supplementaryKinds:(nullable NSArray<NSString *> *)supplementaryKinds
+                    scrollDirection:(UICollectionViewScrollDirection)scrollDirection
+                     scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                             offset: (CGFloat)offset;
+
 /**
  Returns the size of a cell at the specified index path.
 

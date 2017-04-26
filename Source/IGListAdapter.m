@@ -147,36 +147,33 @@
 
 #pragma mark - Scrolling
 
-- (void)scrollToObject:(id)object
-    supplementaryKinds:(NSArray<NSString *> *)supplementaryKinds
-       scrollDirection:(UICollectionViewScrollDirection)scrollDirection
-        scrollPosition:(UICollectionViewScrollPosition)scrollPosition
-                offset: (CGFloat)offset
-              animated:(BOOL)animated {
-    IGAssertMainThread();
+- (CGPoint)getContentOffsetOfObject:(id)object
+                 supplementaryKinds:(nullable NSArray<NSString *> *)supplementaryKinds
+                    scrollDirection:(UICollectionViewScrollDirection)scrollDirection
+                     scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                             offset: (CGFloat)offset {
+    
     IGParameterAssert(object != nil);
-
+    
     const NSInteger section = [self sectionForObject:object];
-    if (section == NSNotFound) {
-        return;
-    }
-
+    
+    IGParameterAssert(section != NSNotFound);
+    
     UICollectionView *collectionView = self.collectionView;
     const NSInteger numberOfItems = [collectionView numberOfItemsInSection:section];
-    if (numberOfItems == 0) {
-        return;
-    }
-
+    
+    IGParameterAssert(numberOfItems != 0);
+    
     // force layout before continuing
     // this method is typcially called before pushing a view controller
     // thus, before the layout process has actually happened
     [collectionView layoutIfNeeded];
-
+    
     // collect the layout attributes for the cell and supplementary views for the first index
     // this will break if there are supplementary views beyond item 0
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     NSArray *attributes = [self layoutAttributesForIndexPath:indexPath supplementaryKinds:supplementaryKinds];
-
+    
     CGFloat offsetMin = 0.0;
     CGFloat offsetMax = 0.0;
     for (UICollectionViewLayoutAttributes *attribute in attributes) {
@@ -193,7 +190,7 @@
                 endMax = CGRectGetMaxY(frame);
                 break;
         }
-
+        
         // find the minimum origin value of all the layout attributes
         if (attribute == attributes.firstObject || originMin < offsetMin) {
             offsetMin = originMin;
@@ -203,7 +200,7 @@
             offsetMax = endMax;
         }
     }
-
+    
     const CGFloat offsetMid = (offsetMin + offsetMax) / 2.0;
     const CGFloat collectionViewWidth = collectionView.bounds.size.width;
     const CGFloat collectionViewHeight = collectionView.bounds.size.height;
@@ -251,13 +248,40 @@
             contentOffset.y += offset;
             break;
     }
-
-    //[collectionView setContentOffset:contentOffset animated:animated];
-    [UIView animateWithDuration:2.0 animations:^{
-        collectionView.contentOffset = contentOffset;
-    }];
+    return contentOffset;
+    
 }
 
+- (void)scrollToObject:(id)object
+    supplementaryKinds:(NSArray<NSString *> *)supplementaryKinds
+       scrollDirection:(UICollectionViewScrollDirection)scrollDirection
+        scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                offset: (CGFloat)offset
+              animated:(BOOL)animated {
+    IGAssertMainThread();
+    
+    
+    IGParameterAssert(object != nil);
+    
+    const NSInteger section = [self sectionForObject:object];
+    
+    IGParameterAssert(section != NSNotFound);
+    
+    UICollectionView *collectionView = self.collectionView;
+    const NSInteger numberOfItems = [collectionView numberOfItemsInSection:section];
+    
+    IGParameterAssert(numberOfItems != 0);
+    
+    // force layout before continuing
+    // this method is typcially called before pushing a view controller
+    // thus, before the layout process has actually happened
+    [collectionView layoutIfNeeded];
+    
+    CGPoint contentOffset = [self getContentOffsetOfObject:object supplementaryKinds:supplementaryKinds scrollDirection:scrollDirection scrollPosition:scrollPosition offset:offset];
+    
+    
+    [collectionView setContentOffset:contentOffset animated:animated];
+}
 
 - (void)scrollToObject:(id)object
     supplementaryKinds:(NSArray<NSString *> *)supplementaryKinds
