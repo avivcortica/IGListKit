@@ -147,7 +147,7 @@
 
 #pragma mark - Scrolling
 
-- (CGPoint)getContentOffsetOfObject:(id)object
+- (CGPoint)contentOffsetOfObject:(id)object
                  supplementaryKinds:(nullable NSArray<NSString *> *)supplementaryKinds
                     scrollDirection:(UICollectionViewScrollDirection)scrollDirection
                      scrollPosition:(UICollectionViewScrollPosition)scrollPosition
@@ -277,7 +277,7 @@
     // thus, before the layout process has actually happened
     [collectionView layoutIfNeeded];
     
-    CGPoint contentOffset = [self getContentOffsetOfObject:object supplementaryKinds:supplementaryKinds scrollDirection:scrollDirection scrollPosition:scrollPosition offset:offset];
+    CGPoint contentOffset = [self contentOffsetOfObject:object supplementaryKinds:supplementaryKinds scrollDirection:scrollDirection scrollPosition:scrollPosition offset:offset];
     
     
     [collectionView setContentOffset:contentOffset animated:animated];
